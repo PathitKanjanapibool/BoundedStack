@@ -28,7 +28,9 @@ public class BoundedStack {
         this.element = new ArrayList<>();
         this.capacity = capacity;
     }
-
+    public int getcapacity(){
+        return capacity;
+    }
     /**
      * 
      * @param s เพิ่มข้อมูล String เข้าไปที่ element
