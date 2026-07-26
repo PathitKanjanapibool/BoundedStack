@@ -19,6 +19,9 @@ public class BoundedStack {
     // ห้ามเว้นวรรค
     // ห้ามเป็นทศนิยม
 
+    private void checkRep(){
+
+    }
 
     /**
      * 
@@ -31,14 +34,30 @@ public class BoundedStack {
     public int getcapacity(){
         return capacity;
     }
+    
+    // ===== Mutators =====
+    
     /**
      * 
      * @param s เพิ่มข้อมูล String เข้าไปที่ element
      */
     public boolean push(String s){
         if(s == null|| s =="") throw new IllegalArgumentException();
-        if(element.size()==capacity) return false;
+        if(element.contains(s)||element.size()==capacity) return false;
         element.add(s);
         return true;
     }
+
+
+    /**
+     * 
+     * @param s ลบข้อมูล String ใน element
+     */
+    public void pop(String s){
+        if(!element.contains(s)) return false;
+        element.remove(s);
+        return true;
+    }
+
+    // ===== Observers =====
 }
