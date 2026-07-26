@@ -35,7 +35,10 @@ public class BoundedStack {
      * 
      * @param s เพิ่มข้อมูล String เข้าไปที่ element
      */
-    public void push(String s){
-
+    public boolean push(String s){
+        if(s == null|| s =="") throw new IllegalArgumentException();
+        if(element.size()==capacity) return false;
+        element.add(s);
+        return true;
     }
 }
