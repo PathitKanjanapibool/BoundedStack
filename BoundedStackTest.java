@@ -22,6 +22,8 @@ public class BoundedStackTest{
 
         testBoundedStack();
         testAdd();
+        testRemove();
+        testSize();
 
         System.out.println("\n=== Summary ===");
         System.out.println("Passed: " + passed);
@@ -35,8 +37,21 @@ public class BoundedStackTest{
     }
     private static void testBoundedStack(){
         System.out.println("===== testBoundedStack =====");
-        BoundedStack tests = new BoundedStack(1);
-        check("capacity is not null", tests.getcapacity() == 1);
+        boolean threw1 = false;
+        boolean threw2 = false;
+        BoundedStack testcapacity;
+        BoundedStack testnull;
+        try { testnull = new BoundedStack(1,Arrays.asList((String)null)); }
+                catch(IllegalArgumentException e){ threw2 = true; }
+                check("throw if element is null", threw2 == true);
+
+        try { testcapacity = new BoundedStack(1,Arrays.asList("hello","I","am")); }
+        catch(IllegalArgumentException e){ threw1 = true; }
+        check("throw if element > capacity", threw1 == true);
+        
+
+        BoundedStack test2 = new BoundedStack(1);
+        check("capacity > 0",test2.getcapacity() == 1);
     }
 
     private static void testAdd(){
@@ -46,8 +61,29 @@ public class BoundedStackTest{
         try { test1.push(null); }
         catch (IllegalArgumentException e) { threw = true; }
         check("capacity is not null", test1.push("Good") == true);
+
         BoundedStack test2 = new BoundedStack(4,Arrays.asList("how","are","you"));
         check("add(A) -> returns false", test2.push("hello") == true);
         check("add(A) -> returns false", test2.push("how") == false);
     }
+    private static void testRemove(){
+        System.out.println("===== testRemove =====");
+        boolean threw = false;
+        BoundedStack test1 = new BoundedStack(1);
+        try { test1.push(null); }
+        catch (IllegalArgumentException e) { threw = true; }
+        check("capacity is not null", test1.pop("Good") == false);
+
+        BoundedStack test2 = new BoundedStack(4,Arrays.asList("how","are","you"));
+        check("add(A) -> returns false", test2.pop("hello") == false);
+        check("add(A) -> returns false", test2.pop("how") == true);
+    }
+    private static void testSize(){
+        BoundedStack test1 = new BoundedStack(1,Arrays.asList("how"));
+        check("Size = 1", test1.size() == 1);
+
+    }
+    private static void testContain(){}
+    private static void testList(){}
+    private static void testshuffled(){}
 }
