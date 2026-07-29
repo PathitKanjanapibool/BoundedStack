@@ -63,6 +63,7 @@ public class BoundedStack {
      * 
      * @param s เพิ่มข้อมูล String เข้าไปที่ element
      * @return true ถ้าเพิ่มสำเร็จ
+     * @throws IllegalArgumentException ถ้า element เป็น null หรือ String ว่าง
      */
     public boolean push(String s){
         if(s == null|| s =="") throw new IllegalArgumentException();
@@ -75,13 +76,15 @@ public class BoundedStack {
     /**
      * 
      * @param s ลบข้อมูล String ใน element
-     * @return true ถ้าลบสำเร็จ
+     * @return true ถ้าลบสำเร็จ ,ถ้าไม่เจอ false
      */
     public boolean pop(String s){
         if(!element.contains(s)) return false;
         element.remove(s);
         return true;
     }
+
+    // ===== Observers =====
     /**
      * 
      * @return ขนาดของelement
@@ -90,5 +93,16 @@ public class BoundedStack {
         return element.size();
     }
 
-    // ===== Observers =====
+    /**
+     * @return ตรวจว่ามี String นี้อยู่หรือไม่
+     */
+    public boolean contains(String s){
+        return element.contains(s);
+    }
+
+     // ===== Producer =====
+     /**
+      * @
+      */
+    
 }
