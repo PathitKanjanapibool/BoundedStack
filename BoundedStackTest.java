@@ -1,4 +1,7 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Test Runner
@@ -39,6 +42,7 @@ public class BoundedStackTest{
 
         BoundedStack testcapacity;
         BoundedStack testnull;
+        
 
         // element != null
         boolean throwNull = false;
@@ -47,15 +51,18 @@ public class BoundedStackTest{
         check("throw if element is null", throwNull);
 
         // จำนวน element ต้องไม่เกิน capacity
-        boolean threwOverCapacity = false;
+        boolean throwOverCapacity = false;
         try { testcapacity = new BoundedStack(2, Arrays.asList("hello", "I", "am")); }
-        catch (IllegalArgumentException e) { threwOverCapacity = true; }
-        check("element > capacity -> throw", threwOverCapacity);
+        catch (IllegalArgumentException e) { throwOverCapacity = true; }
+        check("element > capacity -> throw", throwOverCapacity);
 
-        BoundedStack test2 = new BoundedStack(-1);
-        check("capacity > 0 -> return -1",test2.getcapacity() == -1);
+        boolean throwLowerthan1 = false;
+        try { testcapacity = new BoundedStack(-1); }
+        catch (IllegalArgumentException e) { throwLowerthan1 = true; }
+        check("capacity <= 0 -> throw",throwLowerthan1);
     }
-    // Mutator: Add กรณีเต็ม,ไม่เต็ม,ซํํ้า,null
+    
+    // Mutator: Add
     private static void testAdd(){
 
         System.out.println("===== testAdd =====");
@@ -68,29 +75,45 @@ public class BoundedStackTest{
         check("Can Add -> return true", test1.push("Good") == true);
         check("Size increase -> return 3",test1.size() == 3);
         check("Dupe -> return false", test1.push("Good") == false);
+        check("contains found -> return true", test1.contains("Greeting") == true);
+        check("contains not found -> return false", test1.contains("Hi") == false);
         
     }
 
-    // Mutator: Remove กรณีnull,,ซํํ้า,null
+    // Mutator: Remove
     private static void testRemove(){
         System.out.println("===== testRemove =====");
         boolean threw = false;
         BoundedStack test1 = new BoundedStack(1);
         try { test1.pop(null); }
         catch (IllegalArgumentException e) { threw = true; }
-        check("capacity is not null", test1.pop("Good") == false);
+        check("String != null -> return false", threw == false);
 
         BoundedStack test2 = new BoundedStack(4,Arrays.asList("how","are","you"));
-        check("remove(hello) -> returns false", test2.pop("hello") == false);
-        check("remove(how) -> returns true", test2.pop("how") == true);
+        check("if no found -> returns false", test2.pop("hello") == false);
+        check("if found -> returns true", test2.pop("how") == true);
+        check("contain found",test2.contains("how") == false);
+        check("Size decrease -> return 2",test2.size() == 2);
+        
     }
+    // Observer
 
-    private static void testContain(){}
-    // private static void testList(){
-    //     check("new() -> contains nothing", !.contains("anything"));
-    // }
-    // private static void testshuffled(){
-    //     BoundedStack original = new BoundedStack(Arrays.asList("A", "B", "C", "D"));
-    //     BoundedStack shuffled = original.shuffled();
-    // }
+    // Producer
+    private static void testShuffle() {
+        System.out.println("\n-- Producer (shuffled) --");
+
+        BoundedStack original = new BoundedStack(4,Arrays.asList("A", "B", "C", "D"));
+        BoundedStack shuffled = original.shuffled();
+
+        check("shuffled has the same size", shuffled.size() == original.size());
+
+        List<String> a = new ArrayList<String>(original.element());
+        List<String> b = new ArrayList<String>(shuffled.element());
+        Collections.sort(a);
+        Collections.sort(b);
+        check("shuffled contains exactly the same songs", a.equals(b));
+
+        check("shuffled does not mutate the original",
+                original.element().equals(Arrays.asList("A", "B", "C", "D")));
+    }
 }
