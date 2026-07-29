@@ -33,8 +33,11 @@ public class BoundedStack {
      * @param capacity กำหนดขนาดของ Stack
      */
     public BoundedStack(int capacity){
+        if (capacity <= 0) throw new IllegalArgumentException();
+
         this.element = new ArrayList<>();
         this.capacity = capacity;
+        checkRep();
     }
     /**
      * 
@@ -42,6 +45,7 @@ public class BoundedStack {
      * @exception throw เมื่อสมาชิก element เป็น null
      */
     public BoundedStack(int capacity,List<String> initial) {
+        if (capacity <= 0) throw new IllegalArgumentException();
         if(initial == null) throw new IllegalArgumentException();
         if(initial.size() > capacity) throw new IllegalArgumentException();
         Set<String> seen = new HashSet<>();
@@ -51,7 +55,7 @@ public class BoundedStack {
         }
         this.element = new ArrayList<>(initial);
         this.capacity = capacity;
-
+        checkRep();
     }
     public int getcapacity(){
         return capacity;
@@ -63,12 +67,12 @@ public class BoundedStack {
      * 
      * @param s เพิ่มข้อมูล String เข้าไปที่ element
      * @return true ถ้าเพิ่มสำเร็จ
-     * @throws IllegalArgumentException ถ้า element เป็น null หรือ String ว่าง
      */
     public boolean push(String s){
         if(s == null|| s =="") throw new IllegalArgumentException();
         if(element.contains(s)||element.size()==capacity) return false;
         element.add(s);
+        checkRep();
         return true;
     }
 
@@ -76,33 +80,22 @@ public class BoundedStack {
     /**
      * 
      * @param s ลบข้อมูล String ใน element
-     * @return true ถ้าลบสำเร็จ ,ถ้าไม่เจอ false
+     * @return true ถ้าลบสำเร็จ
      */
     public boolean pop(String s){
         if(!element.contains(s)) return false;
         element.remove(s);
+        checkRep();
         return true;
     }
-
-    // ===== Observers =====
     /**
      * 
      * @return ขนาดของelement
      */
     public int size(){
+        checkRep();
         return element.size();
     }
 
-    /**
-     * @return ตรวจว่ามี String นี้อยู่หรือไม่
-     */
-    public boolean contains(String s){
-        return element.contains(s);
-    }
-
-     // ===== Producer =====
-     /**
-      * @
-      */
-    
+    // ===== Observers =====
 }
